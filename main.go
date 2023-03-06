@@ -2,32 +2,44 @@ package main
 
 import (
 	"de-bt-bencode/bencode"
-	"de-bt-bencode/utils"
+	"errors"
 	"fmt"
-	"os"
 )
 
 func main() {
-	if len(os.Args) != 2 {
-		fmt.Println("Usage: bdecode FILENAME")
-		return
-	}
-	filename := os.Args[1]
-	data, err := os.ReadFile(filename)
+	mode, err := modeSelect()
 	if err != nil {
-		fmt.Printf("Error reading file %s: %v\n", filename, err)
+		fmt.Println("[Error selecting mode]: %v\n", err)
 		return
 	}
 
-	// 解码Bencode字符串
-	var value interface{}
-	err = bencode.Decode(data, &value)
+	if mode == 1 {
+		fmt.Println("[You have selected Decode mode]")
+		bencode.DecodeStart()
+		// 执行Decode的代码
+	} else if mode == 2 {
+		fmt.Println("[You have selected Encode mode]")
+		// 执行Encode的代码
+	}
+}
+
+func modeSelect() (int, error) {
+	fmt.Println("Please choose a mode:")
+	fmt.Println("1. Decode")
+	fmt.Println("2. Encode")
+	var mode int
+
+	_, err := fmt.Scanln(&mode)
+
 	if err != nil {
-		fmt.Printf("Error decoding Bencode data: %v\n", err)
-		return
+		return 0, err
 	}
 
-	// 打印解码结果
-	//fmt.Printf("Decoded value: %+v\n", value)
-	utils.OutputValue(value)
+	if mode == 1 {
+		return 1, nil
+	} else if mode == 2 {
+		return 2, nil
+	} else {
+		return 0, errors.New("Invalid mode")
+	}
 }

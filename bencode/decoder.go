@@ -1,16 +1,47 @@
 package bencode
 
 import (
+	"de-bt-bencode/utils"
 	"errors"
+	"fmt"
+	"os"
 	"reflect"
 	"strconv"
 )
 
-func Decode(data []byte, value interface{}) error {
+func DecodeStart() {
+	fmt.Print("Please enter file path: ")
+	var filename string
+	_, err := fmt.Scanln(&filename)
+	if err != nil {
+		fmt.Printf("[Error reading file path]: %v\n", err)
+		return
+	}
+
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		fmt.Printf("[Error reading file] %s: %v\n", filename, err)
+		return
+	}
+
+	// 解码Bencode字符串
+	var value interface{}
+	err = decode(data, &value)
+	if err != nil {
+		fmt.Printf("[Error decoding Bencode data]: %v\n", err)
+		return
+	}
+
+	// 打印解码结果
+	//fmt.Printf("Decoded value: %+v\n", value)
+	utils.OutputValue(value)
+}
+
+func decode(data []byte, value interface{}) error {
 	// 通过反射获取目标数据类型
 	target := reflect.ValueOf(value)
 	if target.Kind() != reflect.Ptr || target.IsNil() {
-		return errors.New("invalid target value")
+		return errors.New("[invalid target value]")
 	}
 
 	// 解析Bencode数据
@@ -19,7 +50,7 @@ func Decode(data []byte, value interface{}) error {
 		return err
 	}
 	if len(rest) > 0 {
-		return errors.New("unexpected data after end of Bencode")
+		return errors.New("[unexpected data after end of Bencode]")
 	}
 
 	// 将解析结果存储到目标数据结构中
@@ -33,21 +64,21 @@ func decodeString(data []byte) (string, []byte, error) {
 		colonPos++
 	}
 	if colonPos == len(data) {
-		return "", nil, errors.New("invalid string format")
+		return "", nil, errors.New("[invalid string format]")
 	}
 	length, err := strconv.Atoi(string(data[:colonPos]))
 	if err != nil {
 		return "", nil, err
 	}
 	if len(data)-colonPos-1 < length {
-		return "", nil, errors.New("invalid string format")
+		return "", nil, errors.New("[invalid string format]")
 	}
 	return string(data[colonPos+1 : colonPos+1+length]), data[colonPos+1+length:], nil
 }
 
 func decodeInt(data []byte) (int64, []byte, error) {
 	if len(data) == 0 || data[0] != 'i' {
-		return 0, nil, errors.New("invalid integer format")
+		return 0, nil, errors.New("[invalid integer format]")
 	}
 	data = data[1:]
 	endPos := 0
@@ -55,7 +86,7 @@ func decodeInt(data []byte) (int64, []byte, error) {
 		endPos++
 	}
 	if endPos == len(data) {
-		return 0, nil, errors.New("invalid integer format")
+		return 0, nil, errors.New("[invalid integer format]")
 	}
 	value, err := strconv.ParseInt(string(data[:endPos]), 10, 64)
 	if err != nil {
@@ -66,7 +97,7 @@ func decodeInt(data []byte) (int64, []byte, error) {
 
 func decodeList(data []byte) ([]interface{}, []byte, error) {
 	if len(data) == 0 || data[0] != 'l' {
-		return nil, nil, errors.New("invalid list format")
+		return nil, nil, errors.New("[invalid list format]")
 	}
 	data = data[1:]
 	result := make([]interface{}, 0)
@@ -79,14 +110,14 @@ func decodeList(data []byte) ([]interface{}, []byte, error) {
 		data = rest
 	}
 	if len(data) == 0 || data[0] != 'e' {
-		return nil, nil, errors.New("invalid list format")
+		return nil, nil, errors.New("[invalid list format]")
 	}
 	return result, data[1:], nil
 }
 
 func decodeDict(data []byte) (map[string]interface{}, []byte, error) {
 	if len(data) == 0 || data[0] != 'd' {
-		return nil, nil, errors.New("invalid dict format")
+		return nil, nil, errors.New("[invalid dict format]")
 	}
 	data = data[1:]
 	result := make(map[string]interface{})
@@ -103,14 +134,14 @@ func decodeDict(data []byte) (map[string]interface{}, []byte, error) {
 		data = rest
 	}
 	if len(data) == 0 || data[0] != 'e' {
-		return nil, nil, errors.New("invalid dict format")
+		return nil, nil, errors.New("[invalid dict format]")
 	}
 	return result, data[1:], nil
 }
 
 func decodeValue(data []byte) (interface{}, []byte, error) {
 	if len(data) == 0 {
-		return nil, nil, errors.New("invalid data format")
+		return nil, nil, errors.New("[invalid data format]1")
 	}
 	switch data[0] {
 	case 'i':
