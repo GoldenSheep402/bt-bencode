@@ -2,6 +2,7 @@ package main
 
 import (
 	"de-bt-bencode/bencode"
+	"de-bt-bencode/utils"
 	"fmt"
 	"os"
 )
@@ -27,5 +28,6 @@ func main() {
 	}
 
 	// 打印解码结果
-	fmt.Printf("Decoded value: %+v\n", value)
+	//fmt.Printf("Decoded value: %+v\n", value)
+	utils.OutputValue(value)
 }
