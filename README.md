@@ -1,4 +1,4 @@
-# de-bt-bencode
+# bt-bencode
 try to encode torrent
 
 decode is not achieve now
