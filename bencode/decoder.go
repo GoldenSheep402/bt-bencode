@@ -33,7 +33,7 @@ func DecodeStart() {
 	}
 
 	// 打印解码结果
-	// fmt.Printf("Decoded value: %+v\n", value)
+	fmt.Printf("\n[OUTPUT]\n\n")
 	utils.OutputValue(value)
 }
 

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+
 	"golang.org/x/text/encoding/simplifiedchinese"
 	"golang.org/x/text/transform"
 )
@@ -13,7 +14,7 @@ func OutputValue(value interface{}) {
 		encoder := simplifiedchinese.GBK.NewEncoder()
 		gbkBytes, _, err := transform.Bytes(encoder, []byte(v))
 		if err != nil {
-			fmt.Printf("Error encoding string: %v\n", err)
+			fmt.Printf(" [Error encoding string]: %v\n", err)
 			return
 		}
 		// 将GBK编码的字节流转换为GBK编码的字符串
@@ -27,9 +28,12 @@ func OutputValue(value interface{}) {
 		}
 	case map[string]interface{}:
 		// 对于字典，递归输出每个键值对
-		for k, v := range v {
-			fmt.Printf("%s: ", k)
-			OutputValue(v)
+		keys := []string{"announce", "comment", "created by", "creation date", "info", "name", "piece length", "pieces", "url-list"}
+		for _, key := range keys {
+			if val, ok := v[key]; ok {
+				fmt.Printf("%s: ", key)
+				OutputValue(val)
+			}
 		}
 	default:
 		// 其他类型直接输出

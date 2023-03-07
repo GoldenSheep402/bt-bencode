@@ -26,6 +26,7 @@ func modeSelect() (int, error) {
 	fmt.Println("Please choose a mode:")
 	fmt.Println("1. Decode")
 	fmt.Println("2. Encode")
+	fmt.Print("Your choice: ")
 	var mode int
 
 	_, err := fmt.Scanln(&mode)
