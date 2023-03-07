@@ -1,7 +1,7 @@
 package bencode
 
 import (
-	"de-bt-bencode/utils"
+	"bt-bencode/utils"
 	"errors"
 	"fmt"
 	"os"
@@ -33,7 +33,7 @@ func DecodeStart() {
 	}
 
 	// 打印解码结果
-	//fmt.Printf("Decoded value: %+v\n", value)
+	// fmt.Printf("Decoded value: %+v\n", value)
 	utils.OutputValue(value)
 }
 
@@ -77,6 +77,7 @@ func decodeString(data []byte) (string, []byte, error) {
 }
 
 func decodeInt(data []byte) (int64, []byte, error) {
+	//匹配头部
 	if len(data) == 0 || data[0] != 'i' {
 		return 0, nil, errors.New("[invalid integer format]")
 	}
@@ -141,7 +142,7 @@ func decodeDict(data []byte) (map[string]interface{}, []byte, error) {
 
 func decodeValue(data []byte) (interface{}, []byte, error) {
 	if len(data) == 0 {
-		return nil, nil, errors.New("[invalid data format]1")
+		return nil, nil, errors.New("[invalid data format]")
 	}
 	switch data[0] {
 	case 'i':

@@ -1,4 +1,4 @@
-module de-bt-bencode
+module bt-bencode
 
 go 1.20
 

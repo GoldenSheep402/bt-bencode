@@ -1,7 +1,7 @@
 package main
 
 import (
-	"de-bt-bencode/bencode"
+	"bt-bencode/bencode"
 	"errors"
 	"fmt"
 )
@@ -16,7 +16,6 @@ func main() {
 	if mode == 1 {
 		fmt.Println("[You have selected Decode mode]")
 		bencode.DecodeStart()
-		// 执行Decode的代码
 	} else if mode == 2 {
 		fmt.Println("[You have selected Encode mode]")
 		// 执行Encode的代码
@@ -40,6 +39,6 @@ func modeSelect() (int, error) {
 	} else if mode == 2 {
 		return 2, nil
 	} else {
-		return 0, errors.New("Invalid mode")
+		return 0, errors.New("[Invalid mode]")
 	}
 }
