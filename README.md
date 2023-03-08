@@ -1,7 +1,7 @@
 # bt-bencode
-try to encode torrent
+try to dencode torrent
 
-decode is not achieve now
+encode is not achieve now
 
 there are still many things to finish
 
