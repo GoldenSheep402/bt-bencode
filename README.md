@@ -1,9 +1,10 @@
 # bt-bencode
-try to encode torrent
+try to dencode torrent
 
-decode is not achieve now
+encode is not achieve now
 
 there are still many things to finish
 
 
-![Snipaste_2023-03-06_16-56-28](https://user-images.githubusercontent.com/67376942/223063663-3f49eaed-1b21-4270-a1eb-a21d5ddb41c8.png)
+
+![Snipaste_2023-03-08_01-02-11](https://user-images.githubusercontent.com/67376942/223494809-67726e72-b553-4bd5-89c4-1db273496d4d.png)
